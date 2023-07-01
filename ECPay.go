@@ -1,7 +1,6 @@
 package ecpay
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"

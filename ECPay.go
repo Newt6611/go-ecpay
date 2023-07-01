@@ -1,12 +1,7 @@
 package ecpay
 
 import (
-	"io"
-	"log"
-	"net/http"
-	"net/url"
 	"strconv"
-	"strings"
 )
 
 type ENDPOINT string
@@ -106,37 +101,12 @@ func (ec *ECPay) CreateOrder(order *Order) (string, error) {
         return "", err 
     }
 
-    data := url.Values{}
+    html := "<form id=\"data_set\" action=" + string(ec.endpoint) + " method=\"post\">"
     for k, v := range m {
-        data.Add(k, v)
-    }
+        html += "<input type=\"hidden\" name=" + k + " value='" + v + "' />"
+    } 
+    html += "<script type=\"text/javascript\">document.getElementById(\"data_set\").submit();</script>"
+    html += "</form>"
 
-    return ec.send(data), nil
-}
-
-func (ec *ECPay) send(form url.Values) string {
-    // client := http.Client {
-    //     CheckRedirect: func(req *http.Request, via []*http.Request) error {
-    //         fmt.Println("Redirect To " + req.URL.String())
-    //         return nil
-    //     },
-    // }
-    req, err := http.NewRequest("POST", string(ec.endpoint), strings.NewReader(form.Encode()))
-    if err != nil {
-        log.Fatalln(err)
-    }
-
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-    res, err := http.DefaultClient.Do(req)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    defer res.Body.Close()
-    bodyBytes, err := io.ReadAll(res.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-    bodyString := string(bodyBytes)
-    return bodyString
+    return html, nil
 }

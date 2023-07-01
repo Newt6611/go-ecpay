@@ -1,6 +1,8 @@
 package ecpay
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -31,7 +33,7 @@ func NewECPay(merchantId string, endpoint ENDPOINT, hashKey string, hashIV strin
 	return e
 }
 
-func (ec *ECPay) CreateOrder(order *Order) error {
+func (ec *ECPay) CreateOrder(order *Order) string, error {
     order.merchantID = ec.merchantId
     order.paymentType = "aio"
     order.choosePayment = "ALL"
@@ -39,7 +41,7 @@ func (ec *ECPay) CreateOrder(order *Order) error {
 
     err := checkOrderField(order)
     if err != nil {
-        return err
+        return "", err
     }
 
     // required
@@ -102,46 +104,24 @@ func (ec *ECPay) CreateOrder(order *Order) error {
     m["CheckMacValue"] = generateCheckMacValue(m, ec.hashKey, ec.hashIV)
 
     if err != nil {
-        return err 
+        return "", err 
     }
 
     data := url.Values{}
     for k, v := range m {
         data.Add(k, v)
     }
-    // data.Add("MerchantID", order.merchantID)
-    // data.Add("PaymentType", order.paymentType)
-    // data.Add("ChoosePayment", order.choosePayment)
-    // data.Add("EncryptType", strconv.Itoa(order.encryptType))
-    // data.Add("CheckMacValue", order.checkMacValue)
-    // data.Add("MerchantTradeNo", order.MerchantTradeNo)
-    // data.Add("MerchantTradeDate", order.MerchantTradeDate)
-    // data.Add("TotalAmount", strconv.Itoa(order.TotalAmount))
-    // data.Add("TradeDesc", order.TradeDesc)
-    // data.Add("ItemName", order.ItemName)
-    // data.Add("ReturnURL", order.ReturnURL)
 
-    // data.Add("StoreID", order.StoreID)
-    // data.Add("ClientBackURL", order.ClientBackURL)
-    // data.Add("ItemURL", order.ItemURL)
-    // data.Add("Remark", order.Remark)
-    // data.Add("ChooseSubPayment", order.ChooseSubPayment)
-    // data.Add("OrderResultURL", order.OrderResultURL)
-    // data.Add("NeedExtraPaidInfo", order.NeedExtraPaidInfo)
-    // data.Add("IgnorePayment", order.IgnorePayment)
-    // data.Add("PlatformID", order.PlatformID)
-    // data.Add("CustomField1", order.CustomField1)
-    // data.Add("CustomField2", order.CustomField2)
-    // data.Add("CustomField3", order.CustomField3)
-    // data.Add("CustomField4", order.CustomField4)
-    // data.Add("Language", order.Language)
-
-    ec.send(data)
-
-    return nil
+    return ec.send(data), nil
 }
 
-func (ec *ECPay) send(form url.Values) {
+func (ec *ECPay) send(form url.Values) string {
+    // client := http.Client {
+    //     CheckRedirect: func(req *http.Request, via []*http.Request) error {
+    //         fmt.Println("Redirect To " + req.URL.String())
+    //         return nil
+    //     },
+    // }
     req, err := http.NewRequest("POST", string(ec.endpoint), strings.NewReader(form.Encode()))
     if err != nil {
         log.Fatalln(err)
@@ -154,4 +134,10 @@ func (ec *ECPay) send(form url.Values) {
     }
 
     defer res.Body.Close()
+    bodyBytes, err := io.ReadAll(res.Body)
+    if err != nil {
+        log.Fatal(err)
+    }
+    bodyString := string(bodyBytes)
+    return bodyString
 }

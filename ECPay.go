@@ -31,7 +31,7 @@ func NewECPay(merchantId string, endpoint ENDPOINT, hashKey string, hashIV strin
 	return e
 }
 
-func (ec *ECPay) CreateOrder(order *AllInOneOrder) (string, error) {
+func (ec *ECPay) CreateOrder(order *AioOrder) (string, error) {
     order.merchantID = ec.merchantId
     order.paymentType = "aio"
     order.choosePayment = "ALL"

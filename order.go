@@ -10,7 +10,7 @@ import (
 )
 
 const ERROR_PREFIX = "ECPay "
-const TRADEDATE_FORMAT = "2006/02/01 15:04:05"
+const TRADE_DATE_FORMAT = "2006/02/01 15:04:05"
 
 type Order struct {
     merchantID string `json:"MerchantID"`

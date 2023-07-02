@@ -9,38 +9,40 @@ import (
 	"strings"
 )
 
-const ERROR_PREFIX = "ECPay "
-const TRADE_DATE_FORMAT = "2006/02/01 15:04:05"
+const (
+    ERROR_PREFIX = "ECPay "
+    TRADE_DATE_FORMAT = "2006/02/01 15:04:05"
+)
 
 type AioOrder struct {
-    merchantID string `json:"MerchantID"`
-    paymentType string `json:"PaymentType"`
-    choosePayment string `json:"ChoosePayment"`
-    encryptType int `json:"EncryptType"`
-    checkMacValue string `json:"CheckMacValue"`
+    merchantID          string  `json:"MerchantID"`
+    paymentType         string  `json:"PaymentType"`
+    choosePayment       string  `json:"ChoosePayment"`
+    encryptType         int     `json:"EncryptType"`
+    checkMacValue       string  `json:"CheckMacValue"`
 
     // required
-    MerchantTradeNo string `json:"MerchantTradeNo"`
-    MerchantTradeDate string `json:"MerchantTradeDate"`
-    TotalAmount int  `json:"TotalAmount"`
-    TradeDesc string `json:"TradeDesc"`
-    ItemName string `json:"ItemName"`
-    ReturnURL string `json:"ReturnURL"`
+    MerchantTradeNo     string  `json:"MerchantTradeNo"`
+    MerchantTradeDate   string  `json:"MerchantTradeDate"`
+    TotalAmount         int     `json:"TotalAmount"`
+    TradeDesc           string  `json:"TradeDesc"`
+    ItemName            string  `json:"ItemName"`
+    ReturnURL           string  `json:"ReturnURL"`
 
-    StoreID string `json:"StoreID"`
-    ClientBackURL string `json:"ClientBackURL"`
-    ItemURL string `json:"ItemURL"`
-    Remark string `json:"Remark"`
-    ChooseSubPayment string `json:"ChooseSubPayment"`
-    OrderResultURL string `json:"OrderResultURL"`
-    NeedExtraPaidInfo string `json:"NeedExtraPaidInfo"`
-    IgnorePayment string `json:"IgnorePayment"`
-    PlatformID string `json:"PlatformID"`
-    CustomField1 string `json:"CustomField1"`
-    CustomField2 string `json:"CustomField2"`
-    CustomField3 string `json:"CustomField3"`
-    CustomField4 string `json:"CustomField4"`
-    Language string `json:"Language"`
+    StoreID             string  `json:"StoreID"`
+    ClientBackURL       string  `json:"ClientBackURL"`
+    ItemURL             string  `json:"ItemURL"`
+    Remark              string  `json:"Remark"`
+    ChooseSubPayment    string  `json:"ChooseSubPayment"`
+    OrderResultURL      string  `json:"OrderResultURL"`
+    NeedExtraPaidInfo   string  `json:"NeedExtraPaidInfo"`
+    IgnorePayment       string  `json:"IgnorePayment"`
+    PlatformID          string  `json:"PlatformID"`
+    CustomField1        string  `json:"CustomField1"`
+    CustomField2        string  `json:"CustomField2"`
+    CustomField3        string  `json:"CustomField3"`
+    CustomField4        string  `json:"CustomField4"`
+    Language            string  `json:"Language"`
 }
 
 func generateCheckMacValue(m map[string]string, hashKey string, hashVI string) string {

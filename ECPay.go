@@ -2,6 +2,10 @@ package ecpay
 
 import (
 	"strconv"
+	"strings"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 type ENDPOINT string
@@ -103,10 +107,21 @@ func (ec *ECPay) CreateOrder(order *Order) (string, error) {
 
     html := "<form id=\"data_set\" action=" + string(ec.endpoint) + " method=\"post\">"
     for k, v := range m {
-        html += "<input type=\"hidden\" name=" + k + " value='" + v + "' />"
+        html += "<input type=\"hidden\" name=" + k + " value='" + v + "' />\n"
     } 
     html += "<script type=\"text/javascript\">document.getElementById(\"data_set\").submit();</script>"
     html += "</form>"
 
     return html, nil
+}
+
+func (ec *ECPay) GetFormatedTime() string {
+    return time.Now().Format(TRADE_DATE_FORMAT)
+}
+
+func GenerateMerchantNo() string {
+    u := uuid.New().String()
+    u = strings.Replace(u, "-", "", -1)
+    u = u[20:]
+    return u
 }

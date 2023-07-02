@@ -12,7 +12,7 @@ import (
 const ERROR_PREFIX = "ECPay "
 const TRADE_DATE_FORMAT = "2006/02/01 15:04:05"
 
-type Order struct {
+type AllInOneOrder struct {
     merchantID string `json:"MerchantID"`
     paymentType string `json:"PaymentType"`
     choosePayment string `json:"ChoosePayment"`
@@ -82,7 +82,7 @@ func generateCheckMacValue(m map[string]string, hashKey string, hashVI string) s
     return finalString
 }
 
-func checkOrderField(o *Order) error {
+func checkOrderField(o *AllInOneOrder) error {
     if len(o.MerchantTradeNo) == 0 {
         return errors.New(ERROR_PREFIX + "MerchantTradeNo is required")
     }

@@ -11,11 +11,11 @@ import (
 type ENDPOINT string
 const (
     DEV_ENDPOINT  ENDPOINT = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"
-	PROD_ENDPOINT ENDPOINT = "https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5"
+    PROD_ENDPOINT ENDPOINT = "https://payment.ecpay.com.tw/Cashier/AioCheckOut/V5"
 )
 
 type ECPay struct {
-	endpoint ENDPOINT 
+    endpoint ENDPOINT 
     merchantId string
     hashKey string
     hashIV string

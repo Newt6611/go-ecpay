@@ -1,8 +1,6 @@
 package ecpay
 
 import (
-
-
 	"crypto/sha256"
 	"errors"
 	"fmt"

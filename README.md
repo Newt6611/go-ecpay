@@ -17,4 +17,3 @@ order := ecpay.AioOrder{
 str, _ := ec.CreateOrder(&order)
 fmt.Println(str)
 ```
-
